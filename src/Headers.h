@@ -13,8 +13,8 @@ struct Coord
 };
 
 
-const int RES_x = 50;
-const int RES_y = 50;
+const int RES_x = 25;
+const int RES_y = 25;
 const sf::Vector2f rect_size = { RES_x, RES_y};
 
 
