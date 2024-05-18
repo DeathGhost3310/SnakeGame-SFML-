@@ -12,10 +12,11 @@ class Snake
 {
 public:
 	Snake(std::shared_ptr<Apple> apple);
-	~Snake();
+	//~Snake();
 	void eat_apple();
 	std::list<Coord> snake_update();
 	void head_move(Coord cd);
+	void snakeRestart();
 	void direction_set(direction head_direction);
 	direction direction_get();
 	bool colided();
@@ -23,9 +24,9 @@ public:
 private:
 	direction m_head_direction = direction::RIGHT;
 	std::shared_ptr<Apple> m_apple;
-	Coord head;
-	std::list<Coord> m_snake;
-	sf::Color m_color = sf::Color::Green;
+	Coord head; //snake head
+	std::list<Coord> m_snake; //snake body and head
+	sf::Color m_color = sf::Color::Green; //snake collor
 };
 
 #endif

@@ -8,9 +8,10 @@
 
 struct Coord
 {
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 };
+
 
 const int RES_x = 50;
 const int RES_y = 50;
@@ -30,7 +31,7 @@ public:
 	Apple() { randomChangePosition(); };
 	//~Apple();
 	Coord getCoord() { return m_cord; };
-	void randomChangePosition() { m_cord.x = rand() % (16 + 1); m_cord.y = rand() % (16 + 1); };
+	void randomChangePosition() { m_cord = Coord{ rand() % (14 + 1), rand() % (14 + 1) }; };
 	sf::Color getColor() { return m_color; };
 private:
 	Coord m_cord;
