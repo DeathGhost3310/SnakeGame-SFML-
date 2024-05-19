@@ -12,8 +12,11 @@ class Snake
 {
 public:
 	Snake(std::shared_ptr<Apple> apple);
+	Snake();
 	//~Snake();
 	void eat_apple();
+	int snake_size();
+	std::list<Coord>& get_snake();
 	std::list<Coord> snake_update();
 	void head_move(Coord cd);
 	void snakeRestart();

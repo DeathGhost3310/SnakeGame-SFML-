@@ -1,26 +1,26 @@
 #include "Render.h"
 #include <string>
 
-Render::Render(std::shared_ptr<sf::RenderWindow> window, float fps, std::shared_ptr<Apple> apple)
-	:m_window(window), m_fps(fps), m_apple(apple)
+Render::Render(std::shared_ptr<sf::RenderWindow> window, float fps, std::shared_ptr<Apple> apple, std::shared_ptr<Snake> snake)
+	:m_window(window), m_fps(fps), m_apple(apple), m_snake(snake)
 {
 	m_rect.setSize(rect_size);
 }
 
-void Render::snake_render(std::list<Coord> snake) {
-	for (auto it = snake.begin();it != snake.end() && snake.size() > 1;it++) {
+void Render::snake_render() {
+	for (auto it = m_snake.get()->get_snake().begin();it != m_snake.get()->get_snake().end() && m_snake.get()->snake_size() > 1;it++) {
 		m_rect.setFillColor(sf::Color::Green);
 		Coord cd = *it;
 		m_rect.setPosition({ cd.x * 25.f + indent_x, cd.y * 25.f + indent_y });
 		m_window.get()->draw(m_rect);
 	}
-	if (snake.size() == 1) {
+	if (m_snake.get()->snake_size() == 1) {
 		m_rect.setFillColor(sf::Color::Green);
-		m_rect.setPosition({ snake.front().x * 25.f + indent_x, snake.front().y * 25.f + indent_y });
+		m_rect.setPosition({ m_snake.get()->get_snake().front().x * 25.f + indent_x, m_snake.get()->get_snake().front().y * 25.f + indent_y });
 		m_window.get()->draw(m_rect);
-
 	}
 }
+
 bool Render::isOpen() {
 	if (m_window.get()->isOpen())
 		return true;
@@ -52,10 +52,10 @@ void Render::apple_render() {
 	m_window.get()->draw(m_rect);
 }
 
-void Render::score_render(const std::list<Coord> snake) {
-	if (!font.loadFromFile("../assets/fonts/appetite-italic.ttf"))
+void Render::score_render() {
+	if (!font.loadFromFile("assets/fonts/appetite-italic.ttf"))
 		return;
-	int score = snake.size();
+	int score = m_snake.get()->snake_size();
 	txt.setFont(font);
 	txt.setFillColor(sf::Color::Cyan);
 	txt.setCharacterSize(48);
@@ -67,15 +67,20 @@ void Render::score_render(const std::list<Coord> snake) {
 	m_window.get()->draw(txt);
 }
 
-void Render::update(std::list<Coord> snake) {
+void Render::update() {
 	m_window.get()->clear(sf::Color::Black);
 	
 	borders_render();
-	snake_render(snake);
+	snake_render();
 	apple_render();
-	score_render(snake);
-
-
+	score_render();
+	
 	m_window.get()->display();
 	sf::sleep(sf::milliseconds(1000.f / m_fps));
+	
+}
+
+void Render::thread_render() {
+	while (true)
+		update();
 }
